@@ -9,9 +9,8 @@ public class ThirdPersonCameraController : MonoBehaviour
     [SerializeField] private Transform _playerVisualTransform;
 
     [Header("Settings")]
-    [SerializeField] private float _distanceFromPlayer = 5f;
 
-    [SerializeField] private float _rotationSpeed = 10f;
+    [SerializeField] private float _rotationSpeed;
 
     private void Update()
     {

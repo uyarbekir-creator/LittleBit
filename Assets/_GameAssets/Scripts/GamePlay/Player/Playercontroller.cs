@@ -66,7 +66,6 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(_slidekey))
         {
             _isSliding = true;
-            Debug.Log("Sliding");
         }
 
         else if(Input.GetKeyDown(_movementkey))
