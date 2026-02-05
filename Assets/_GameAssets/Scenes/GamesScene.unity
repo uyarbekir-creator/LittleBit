@@ -130,9 +130,11 @@ GameObject:
   - component: {fileID: 288046298}
   - component: {fileID: 288046297}
   - component: {fileID: 288046296}
+  - component: {fileID: 288046300}
+  - component: {fileID: 288046299}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -169,7 +171,7 @@ Rigidbody:
   m_GameObject: {fileID: 288046295}
   serializedVersion: 5
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 2
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -204,6 +206,49 @@ Transform:
   - {fileID: 1017554597}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &288046299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288046295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0bb80065971d19448d131f6be53a23b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StateController
+--- !u!114 &288046300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288046295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 802ac35bc53db294ba43a1df8463a0fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  _orientationTransform: {fileID: 1017554597}
+  _movementkey: 101
+  _movementspeed: 30
+  _jumpkey: 32
+  _jumpforce: 8
+  _jumpcooldown: 0.66
+  _airmultiplier: 0.2
+  _airDrag: 0.75
+  _canJump: 1
+  _slidekey: 113
+  _slidemultiplier: 2
+  _slideDrag: 2
+  _slidecooldown: 0
+  _canSlide: 0
+  _playerHeight: 1
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _groundDrag: 5
 --- !u!1 &296859842
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,7 +643,6 @@ MonoBehaviour:
   _playerTransform: {fileID: 288046298}
   _orientatiionTransform: {fileID: 1017554597}
   _playerVisualTransform: {fileID: 3187165485078180269}
-  _distanceFromPlayer: 5
   _rotationSpeed: 7
 --- !u!1 &410087039
 GameObject:

@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Transform orientationTransform;
+    [SerializeField] private Transform _orientationTransform;
 
     [Header("Movement Settings ")]
 
@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private KeyCode _jumpkey;
     [SerializeField] private float _jumpforce;
     [SerializeField] private float _jumpcooldown;
+    [SerializeField] private float _airmultiplier;
+    [SerializeField] private float _airDrag;
     [SerializeField] private bool _canJump;
 
     [Header("Slide Settings ")]
@@ -26,7 +28,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool _canSlide;
 
 
-    [Header("Ground Settings ")]
+    [Header("Ground Check Settings ")]
     [SerializeField] private float _playerHeight;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private float _groundDrag;
@@ -34,7 +36,7 @@ public class PlayerController : MonoBehaviour
     private StateController _stateController;
     private Rigidbody _playerRigidbody;
 
-    private float horizontalInput, _verticalInput;
+    private float _horizontalInput, _verticalInput;
     private Vector3 _movementdirection;
     private bool _isSliding;
 
@@ -60,10 +62,9 @@ public class PlayerController : MonoBehaviour
         setplayerMovement();
     }
     private void setinputs()
-
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        _horizontalInput = Input.GetAxisRaw("Horizontal");
+        _verticalInput = Input.GetAxisRaw("Vertical");
 
         if (Input.GetKeyDown(_slidekey))
         {
@@ -73,7 +74,6 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(_movementkey))
         {
             _isSliding = false;
-            Debug.Log("Not Sliding");
         }
 
         else if (Input.GetKey(_jumpkey) && _canJump && IsGrounded())
@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         var movementDirection = GetMovementDirection();
         var isGrounded = IsGrounded();
-        var _isSliding = _IsSliding();
+        var isSliding = IsSliding();
         var currentState = _stateController.GetCurrentState();
 
         var newState = currentState switch
@@ -105,40 +105,35 @@ public class PlayerController : MonoBehaviour
         {
             _stateController.ChangeState(newState);
         }
-
-        Debug.Log(newState);
     }
 
     private void setplayerMovement()
     {
-        _movementdirection = orientationTransform.forward * verticalInput + orientationTransform.right * horizontalInput;
+        _movementdirection = _orientationTransform.forward * _verticalInput 
+        + _orientationTransform.right * _horizontalInput;
 
-        if (_isSliding)
+        float forceMultiplier = _stateController.GetCurrentState() switch
         {
+            PlayerState.Move => 1f,
+            PlayerState.Slide => _slidemultiplier,
+            PlayerState.Jump => _airmultiplier,
+            _ => 1f
+        };
 
-            _playerRigidbody.AddForce(_movementdirection.normalized * _movementspeed * _slidemultiplier, ForceMode.Force);
-
+         _playerRigidbody.AddForce(_movementdirection.normalized * _movementspeed * forceMultiplier, ForceMode.Force);
         }
-        else
-        {
-            _playerRigidbody.AddForce(_movementdirection.normalized * _movementspeed, ForceMode.Force);
 
-        }
-
-
-
-    }
 
     private void SetPlayerDrag()
     {
-        if (_isSliding)
+        
+        _playerRigidbody.linearDamping = _stateController.GetCurrentState() switch
         {
-            _playerRigidbody.linearDamping = _slideDrag;
-        }
-        else
-        {
-            _playerRigidbody.linearDamping = _groundDrag;
-        }
+            PlayerState.Move => _groundDrag,
+            PlayerState.Slide => _slideDrag,
+            PlayerState.Jump => _airDrag,
+            _ => _playerRigidbody.linearDamping
+        };
     }
     private void LimitPlayerSpeed()
     {
@@ -170,7 +165,7 @@ public class PlayerController : MonoBehaviour
         return _movementdirection.normalized;
     }
     
-    private bool _IsSliding()
+    private bool IsSliding()
     {
         return _isSliding;
     }
