@@ -5,13 +5,13 @@ public class PlayerInteractionController : MonoBehaviour
     private void OnTriggerEnter(Collider other) 
     {
       if(other.CompareTag(Consts.WheatTypes.GOLD_WHEAT))
-      {Debug.Log("GOLD WHEAT");}
+      other.gameObject?.GetComponent<GoldWheatCollectible>().Collect();
 
       if(other.CompareTag(Consts.WheatTypes.HOLY_WHEAT))
-      {Debug.Log("HOLY WHEAT");}
+      other.gameObject?.GetComponent<HolyWheatCollectible>().Collect();
 
       if(other.CompareTag(Consts.WheatTypes.ROTTEN_WHEAT))
-      {Debug.Log("ROTTEN WHEAT");}
+      other.gameObject?.GetComponent<RottenWheatCollectible>().Collect();
     }
     
 }

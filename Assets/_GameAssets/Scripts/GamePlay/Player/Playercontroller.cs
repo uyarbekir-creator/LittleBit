@@ -4,19 +4,19 @@ using System;
 public class PlayerController : MonoBehaviour
 {
     public event Action OnPlayerJumped;
-    
+
     [Header("References")]
     [SerializeField] private Transform _orientationTransform;
 
     [Header("Movement Settings ")]
 
     [SerializeField] private KeyCode _movementkey;
-    [SerializeField] private float _movementspeed;
+    [SerializeField] private float _movementSpeed;
 
     [Header("Jump Settings ")]
 
     [SerializeField] private KeyCode _jumpkey;
-    [SerializeField] private float _jumpforce;
+    [SerializeField] private float _jumpForce;
     [SerializeField] private float _jumpcooldown;
     [SerializeField] private float _airmultiplier;
     [SerializeField] private float _airDrag;
@@ -39,6 +39,8 @@ public class PlayerController : MonoBehaviour
     private StateController _stateController;
     private Rigidbody _playerRigidbody;
 
+    private float _startingMovementSpeed, _startingJumpForce;
+
     private float _horizontalInput, _verticalInput;
     private Vector3 _movementdirection;
     private bool _isSliding;
@@ -49,6 +51,9 @@ public class PlayerController : MonoBehaviour
         _stateController = GetComponent<StateController>();
         _playerRigidbody = GetComponent<Rigidbody>();
         _playerRigidbody.freezeRotation = true;
+
+        _startingMovementSpeed = _movementSpeed;
+        _startingJumpForce = _jumpForce;
 
     }
 
@@ -104,7 +109,7 @@ public class PlayerController : MonoBehaviour
             _ => currentState
         };
 
-        if(newState != currentState)
+        if (newState != currentState)
         {
             _stateController.ChangeState(newState);
         }
@@ -112,7 +117,7 @@ public class PlayerController : MonoBehaviour
 
     private void setplayerMovement()
     {
-        _movementdirection = _orientationTransform.forward * _verticalInput 
+        _movementdirection = _orientationTransform.forward * _verticalInput
         + _orientationTransform.right * _horizontalInput;
 
         float forceMultiplier = _stateController.GetCurrentState() switch
@@ -123,13 +128,13 @@ public class PlayerController : MonoBehaviour
             _ => 1f
         };
 
-         _playerRigidbody.AddForce(_movementdirection.normalized * _movementspeed * forceMultiplier, ForceMode.Force);
-        }
+        _playerRigidbody.AddForce(_movementdirection.normalized * _movementSpeed * forceMultiplier, ForceMode.Force);
+    }
 
 
     private void SetPlayerDrag()
     {
-        
+
         _playerRigidbody.linearDamping = _stateController.GetCurrentState() switch
         {
             PlayerState.Move => _groundDrag,
@@ -141,9 +146,9 @@ public class PlayerController : MonoBehaviour
     private void LimitPlayerSpeed()
     {
         Vector3 flatVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);
-        if (flatVelocity.magnitude > _movementspeed)
+        if (flatVelocity.magnitude > _movementSpeed)
         {
-            Vector3 limitedVelocity = flatVelocity.normalized * _movementspeed;
+            Vector3 limitedVelocity = flatVelocity.normalized * _movementSpeed;
             _playerRigidbody.linearVelocity = new Vector3(limitedVelocity.x, _playerRigidbody.linearVelocity.y, limitedVelocity.z);
         }
     }
@@ -152,12 +157,14 @@ public class PlayerController : MonoBehaviour
     {
         OnPlayerJumped?.Invoke();
         _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);
-        _playerRigidbody.AddForce(transform.up * _jumpforce, ForceMode.Impulse);
+        _playerRigidbody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
     }
     private void ResetJumping()
     {
         _canJump = true;
     }
+
+    #region Helper Functions
 
     private bool IsGrounded()
     {
@@ -168,10 +175,34 @@ public class PlayerController : MonoBehaviour
     {
         return _movementdirection.normalized;
     }
-    
+
     private bool IsSliding()
     {
         return _isSliding;
     }
+
+public void SetMovementSpeed(float speed, float duration)
+    {
+        _movementSpeed += speed;
+        Invoke(nameof(ResetMovementSpeed), duration);
+    }
+
+    private void ResetMovementSpeed()
+    {
+        _movementSpeed = _startingMovementSpeed;
+    }
+
+public void SetJumpForce(float force, float duration)
+    {
+        _jumpForce += force;
+        Invoke(nameof(ResetJumpForce), duration);
+    }
+
+    private void ResetJumpForce()
+    {
+        _jumpForce = _startingJumpForce;
+    }
+
+    #endregion
 
 }

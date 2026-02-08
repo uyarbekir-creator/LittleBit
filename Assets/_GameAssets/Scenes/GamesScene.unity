@@ -347,9 +347,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _orientationTransform: {fileID: 1017554597}
   _movementkey: 101
-  _movementspeed: 40
+  _movementSpeed: 40
   _jumpkey: 32
-  _jumpforce: 8
+  _jumpForce: 8
   _jumpcooldown: 0.66
   _airmultiplier: 0.2
   _airDrag: 0.75
@@ -1456,6 +1456,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 989208427}
+  - component: {fileID: 989208428}
   - component: {fileID: 989208426}
   m_Layer: 0
   m_Name: RottenWheat
@@ -1501,6 +1502,21 @@ Transform:
   - {fileID: 110784536}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &989208428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989208425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa85b1e40ede13b4f846a5fcfbc6d79b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RottenWheatCollectible
+  _playerController: {fileID: 288046300}
+  _movementDecreaseSpeed: -25
+  _resetBoostDuration: 5
 --- !u!1 &1017554596
 GameObject:
   m_ObjectHideFlags: 0
@@ -1781,6 +1797,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1523362720}
+  - component: {fileID: 1523362721}
   - component: {fileID: 1523362719}
   m_Layer: 0
   m_Name: GoldWheat
@@ -1826,6 +1843,21 @@ Transform:
   - {fileID: 2529081715018546812}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1523362721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523362718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 220b14e7d99908243904b8bee72e09bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GoldWheatCollectible
+  _playerController: {fileID: 288046300}
+  _movementIncreaseSpeed: 15
+  _resetBoostDuration: 5
 --- !u!1 &1544774230
 GameObject:
   m_ObjectHideFlags: 0
@@ -2514,6 +2546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2132780086}
+  - component: {fileID: 2132780087}
   - component: {fileID: 2132780085}
   m_Layer: 0
   m_Name: HolyWheat
@@ -2559,6 +2592,21 @@ Transform:
   - {fileID: 1687628271}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2132780087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132780084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c7a29c0b76318141bdcde0618460b19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HolyWheatCollectible
+  _playerController: {fileID: 288046300}
+  _forceIncrease: 8
+  _resetBoostDuration: 5
 --- !u!23 &805637494468422022
 MeshRenderer:
   m_ObjectHideFlags: 0
