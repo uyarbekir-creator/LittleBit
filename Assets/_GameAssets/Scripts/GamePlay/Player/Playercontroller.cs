@@ -168,7 +168,7 @@ public class PlayerController : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + 2f, _groundLayer);
+        return Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + 0.22f, _groundLayer);
     }
 
     private Vector3 GetMovementDirection()
