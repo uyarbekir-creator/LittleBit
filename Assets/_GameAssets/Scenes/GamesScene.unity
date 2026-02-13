@@ -2032,7 +2032,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1796289764}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2ce0a69327e4d5945b25a666c3e26980, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2074,6 +2074,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f508bdaf99edcc943873e11de10eb7e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpatulaBooster
+  _spatulaAnimator: {fileID: 9168625486959015802}
+  _jumpForce: 25
 --- !u!1 &1860736562
 GameObject:
   m_ObjectHideFlags: 0

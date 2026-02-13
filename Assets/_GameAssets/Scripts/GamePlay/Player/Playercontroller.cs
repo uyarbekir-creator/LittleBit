@@ -203,7 +203,7 @@ public void SetJumpForce(float force, float duration)
         _jumpForce = _startingJumpForce;
     }
 
-    public rigidbody GetPlayerRigidbody()
+    public Rigidbody GetPlayerRigidbody()
     {
         return _playerRigidbody;
     }
