@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0e3dd449ecf51304fa09eecd2c94b8a6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _playerController: {instanceID: 0}
+  - _playerWalkingTransform: {instanceID: 0}
+  - _playerSlidingTransform: {instanceID: 0}
+  - _playerWalkingActiveSprite: {fileID: 21300000, guid: 63da247c002233a40b6ddb98eb9ccfc9, type: 3}
+  - _playerWalkingPassiveSprite: {instanceID: 0}
+  - _playerSlidingActiveSprite: {instanceID: 0}
+  - _playerSlidingPassiveSprite: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
