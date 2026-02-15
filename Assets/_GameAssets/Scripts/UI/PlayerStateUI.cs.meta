@@ -7,8 +7,14 @@ MonoImporter:
   - _playerController: {instanceID: 0}
   - _playerWalkingTransform: {instanceID: 0}
   - _playerSlidingTransform: {instanceID: 0}
+  - _boosterSpeedTransform: {instanceID: 0}
+  - _boosterJumpTransform: {instanceID: 0}
+  - _boosterSlowTransform: {instanceID: 0}
+  - _goldboosterWheatImage: {instanceID: 0}
+  - _holyboosterWheatImage: {instanceID: 0}
+  - _rottenboosterWheatImage: {instanceID: 0}
   - _playerWalkingActiveSprite: {fileID: 21300000, guid: 63da247c002233a40b6ddb98eb9ccfc9, type: 3}
-  - _playerWalkingPassiveSprite: {instanceID: 0}
+  - _playerWalkingPassiveSprite: {fileID: 21300000, guid: 3dd674e6fd7c4b947ba844cefbe74a59, type: 3}
   - _playerSlidingActiveSprite: {instanceID: 0}
   - _playerSlidingPassiveSprite: {instanceID: 0}
   executionOrder: 0
