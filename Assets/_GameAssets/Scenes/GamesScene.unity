@@ -2748,7 +2748,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 38a7c70361b84084a965cf04e58b0a41, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -4027,7 +4027,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 38a7c70361b84084a965cf04e58b0a41, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -4262,11 +4262,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 146826493860477866, guid: 5f43fe212de0886488f91348c2fdd6d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.42
+      value: 3.77
       objectReference: {fileID: 0}
     - target: {fileID: 146826493860477866, guid: 5f43fe212de0886488f91348c2fdd6d3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 146826493860477866, guid: 5f43fe212de0886488f91348c2fdd6d3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4836,16 +4836,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3373777017244846265, guid: 50bdd64490a3376448244fcb52f912db, type: 3}
+      propertyPath: _playerStateUI
+      value: 
+      objectReference: {fileID: 1758014581}
+    - target: {fileID: 3373777017244846265, guid: 50bdd64490a3376448244fcb52f912db, type: 3}
       propertyPath: _playerController
       value: 
       objectReference: {fileID: 288046300}
     - target: {fileID: 7474996608858580884, guid: 50bdd64490a3376448244fcb52f912db, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.13
+      value: 3.48
       objectReference: {fileID: 0}
     - target: {fileID: 7474996608858580884, guid: 50bdd64490a3376448244fcb52f912db, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7474996608858580884, guid: 50bdd64490a3376448244fcb52f912db, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4918,11 +4922,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4066620432100624698, guid: ec0dacccd2452204c9e91dc5e1dc31c2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.24
+      value: 3.5900002
       objectReference: {fileID: 0}
     - target: {fileID: 4066620432100624698, guid: ec0dacccd2452204c9e91dc5e1dc31c2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4066620432100624698, guid: ec0dacccd2452204c9e91dc5e1dc31c2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4956,6 +4960,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6442536366303518120, guid: ec0dacccd2452204c9e91dc5e1dc31c2, type: 3}
+      propertyPath: _playerStateUI
+      value: 
+      objectReference: {fileID: 1758014581}
     - target: {fileID: 6442536366303518120, guid: ec0dacccd2452204c9e91dc5e1dc31c2, type: 3}
       propertyPath: _playerController
       value: 
