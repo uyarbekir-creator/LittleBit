@@ -608,6 +608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _eggCounterUI: {fileID: 1514007283}
+  _winLoseUI: {fileID: 652221451}
   _maxEggcount: 5
 --- !u!1 &260977104
 GameObject:
@@ -2818,6 +2819,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 652221450}
+  - component: {fileID: 652221451}
   m_Layer: 5
   m_Name: WinLoseUI
   m_TagString: Untagged
@@ -2847,6 +2849,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &652221451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 652221449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0de7978c0c6545c468df7e89b9d1756a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WinLoseUI
+  _blackBackgroundObject: {fileID: 37397868}
+  _winPopUp: {fileID: 776558915}
+  _losePopUp: {fileID: 670613524}
+  _animationDuration: 0.3
 --- !u!1 &669800736
 GameObject:
   m_ObjectHideFlags: 0
@@ -2993,6 +3011,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 670613525}
+  - component: {fileID: 670613526}
   m_Layer: 5
   m_Name: LosePopup
   m_TagString: Untagged
@@ -3020,6 +3039,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 512, y: 512}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &670613526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 670613524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e11f565c239e22d44bd45829d83c6b04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LosePopup
+  _timerUI: {fileID: 374300424}
+  _tryAgainButton: {fileID: 1455443085}
+  _mainMenuButton: {fileID: 926624067}
+  _timerText: {fileID: 1765879703}
 --- !u!1 &686115811
 GameObject:
   m_ObjectHideFlags: 0
@@ -3515,6 +3550,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 776558916}
+  - component: {fileID: 776558917}
   m_Layer: 5
   m_Name: WinPopup
   m_TagString: Untagged
@@ -3542,6 +3578,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 512, y: 512}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &776558917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 776558915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa870643d14594840bac9d6986c28b03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WinPopup
+  _timerUI: {fileID: 374300424}
+  _oneMoreButton: {fileID: 1998494989}
+  _mainMenuButton: {fileID: 305321980}
+  _timerText: {fileID: 531197504}
 --- !u!1 &778235243
 GameObject:
   m_ObjectHideFlags: 0
