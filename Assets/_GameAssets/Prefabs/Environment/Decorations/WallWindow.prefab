@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 7083946238418279119}
   - component: {fileID: 5117122060223115791}
   - component: {fileID: 8422250045819014970}
-  m_Layer: 0
+  - component: {fileID: -866246216762318129}
+  m_Layer: 6
   m_Name: WallWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,11 +62,13 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a668623c958050488330bfd4f736d25, type: 2}
-  - {fileID: 2100000, guid: f2f5416756597834ca5e301434a8d05d, type: 2}
+  - {fileID: 2100000, guid: 9563fe5ee3427b946aa870de15e9b17a, type: 2}
+  - {fileID: 2100000, guid: 4f39af6373ea0cd4d9e0a8f4b7e38715, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,7 +86,31 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &-866246216762318129
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8556745452846760858}
+  m_Material: {fileID: 13400000, guid: 2ce0a69327e4d5945b25a666c3e26980, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5788985401250361358, guid: cab97385a5c807c4b9900f589823c70a, type: 3}

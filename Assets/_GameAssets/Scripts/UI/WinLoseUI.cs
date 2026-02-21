@@ -25,19 +25,27 @@ public class WinLoseUI : MonoBehaviour
 
     public void OnGameWin()
     {
-        _blackBackgroundObject.SetActive(true);
-        _winPopUp.SetActive(true);
-
-        _blackBackgroundImage.DOFade(0.8f, _animationDuration).SetEase(Ease.Linear);
-        _winPopUpTransform.DOScale(1.5f, _animationDuration).SetEase(Ease.OutBack);
+        ShowUI(_winPopUp, _winPopUpTransform);
     }
 
     public void OnGameLose()
     {
-        _blackBackgroundObject.SetActive(true);
-        _losePopUp.SetActive(true);
+        ShowUI(_losePopUp, _losePopUpTransform);
+    }
 
-        _blackBackgroundImage.DOFade(0.8f, _animationDuration).SetEase(Ease.Linear);
-        _losePopUpTransform.DOScale(1.5f, _animationDuration).SetEase(Ease.OutBack);
+    private void ShowUI(GameObject popup, RectTransform popupTransform)
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // Time.timeScale = 0f; 
+
+        _blackBackgroundObject.SetActive(true);
+        popup.SetActive(true);
+
+        // Animasyonlar
+        _blackBackgroundImage.DOFade(0.8f, _animationDuration).SetEase(Ease.Linear).SetUpdate(true);
+        popupTransform.DOScale(1.5f, _animationDuration).SetEase(Ease.OutBack).SetUpdate(true);
+        
     }
 }

@@ -14,12 +14,21 @@ public class LosePopup : MonoBehaviour
     private void OnEnable() 
     {
         _timerText.text = _timerUI.GetFinalTime();
+        
+        _tryAgainButton.onClick.RemoveAllListeners();
         _tryAgainButton.onClick.AddListener(OnTryAgainButtonClicked);
-        //_mainMenuButton.onClick.AddListener(OnMainMenuButtonClicked);
+        
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private void OnTryAgainButtonClicked()
     {
+        Time.timeScale = 1f; 
+        
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         SceneManager.LoadScene(Consts.SceneNames.GAME_SCENE);
     }
 }

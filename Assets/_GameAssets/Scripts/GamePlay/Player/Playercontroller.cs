@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _airmultiplier;
     [SerializeField] private float _airDrag;
     [SerializeField] private bool _canJump;
+    [SerializeField] private float _maxFallSpeed = 5f;
 
     [Header("Slide Settings ")]
 
@@ -69,7 +70,7 @@ public class PlayerController : MonoBehaviour
         setinputs();
         SetStates();
         SetPlayerDrag();
-        LimitPlayerSpeed();
+        
     }
 
     private void FixedUpdate()
@@ -81,6 +82,7 @@ public class PlayerController : MonoBehaviour
         }
 
         setplayerMovement();
+        LimitPlayerSpeed();
     }
     private void setinputs()
     {
@@ -165,6 +167,11 @@ public class PlayerController : MonoBehaviour
             Vector3 limitedVelocity = flatVelocity.normalized * _movementSpeed;
             _playerRigidbody.linearVelocity = new Vector3(limitedVelocity.x, _playerRigidbody.linearVelocity.y, limitedVelocity.z);
         }
+
+        if (_playerRigidbody.linearVelocity.y < -_maxFallSpeed)
+    {
+        _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, -_maxFallSpeed, _playerRigidbody.linearVelocity.z);
+    }
     }
 
     private void SetPlayerJumping()

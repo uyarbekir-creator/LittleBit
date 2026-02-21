@@ -11,17 +11,24 @@ public class WinPopup : MonoBehaviour
     [SerializeField] private Button _mainMenuButton;
     [SerializeField] private TMP_Text _timerText;
 
-
     private void OnEnable() 
     {
         _timerText.text = _timerUI.GetFinalTime();
+        
+        _oneMoreButton.onClick.RemoveAllListeners();
         _oneMoreButton.onClick.AddListener(OnOneMoreButtonClicked);
-        //_mainMenuButton.onClick.AddListener(OnMainMenuButtonClicked);
+        
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     private void OnOneMoreButtonClicked()
     {
+        Time.timeScale = 1f; 
+        
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         SceneManager.LoadScene(Consts.SceneNames.GAME_SCENE);
     }
-    
 }
