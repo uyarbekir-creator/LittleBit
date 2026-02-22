@@ -38,19 +38,24 @@ public class WinLoseUI : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Time.timeScale = 0f; 
-
         _blackBackgroundObject.SetActive(true);
         popup.SetActive(true);
 
-        // Animasyonlar
-        _blackBackgroundImage.DOFade(0.8f, _animationDuration).SetEase(Ease.Linear).SetUpdate(true);
-        popupTransform.DOScale(1.5f, _animationDuration).SetEase(Ease.OutBack).SetUpdate(true);
-        
+        // .SetLink(gameObject) ekleyerek animasyonu güvenli hale getiriyoruz:
+        _blackBackgroundImage.DOFade(0.8f, _animationDuration)
+            .SetEase(Ease.Linear)
+            .SetUpdate(true)
+            .SetLink(gameObject); 
+
+        popupTransform.DOScale(1.5f, _animationDuration)
+            .SetEase(Ease.OutBack)
+            .SetUpdate(true)
+            .SetLink(popup); // Popup yok olursa animasyon da durur
     }
 
     private void OnDestroy()
-{
-    transform.DOKill();
-}
+    {
+        // En sade ve kesin çözüm: Bu script yok olurken tüm animasyonlarını temizle
+        DOTween.KillAll(); 
+    }
 }

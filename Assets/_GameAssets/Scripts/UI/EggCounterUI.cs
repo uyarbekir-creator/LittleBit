@@ -29,6 +29,7 @@ public class EggCounterUI : MonoBehaviour
         _eggCounterText.DOColor(_eggCounterColor, _colorDuration);
         _eggCounterRectTransform.DOScale(1.2f, _scaleDuration).SetEase(Ease.OutBack);
     }
+    
 
 }
 
