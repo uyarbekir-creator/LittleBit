@@ -48,4 +48,9 @@ public class WinLoseUI : MonoBehaviour
         popupTransform.DOScale(1.5f, _animationDuration).SetEase(Ease.OutBack).SetUpdate(true);
         
     }
+
+    private void OnDestroy()
+{
+    transform.DOKill();
+}
 }
