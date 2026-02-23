@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if(GameManager.Instance.GetCurrentGameState() != GameState.Play
+        if (GameManager.Instance.GetCurrentGameState() != GameState.Play
             && GameManager.Instance.GetCurrentGameState() != GameState.Resume)
         {
             return;
@@ -70,12 +70,12 @@ public class PlayerController : MonoBehaviour
         setinputs();
         SetStates();
         SetPlayerDrag();
-        
+
     }
 
     private void FixedUpdate()
     {
-        if(GameManager.Instance.GetCurrentGameState() != GameState.Play
+        if (GameManager.Instance.GetCurrentGameState() != GameState.Play
             && GameManager.Instance.GetCurrentGameState() != GameState.Resume)
         {
             return;
@@ -169,9 +169,9 @@ public class PlayerController : MonoBehaviour
         }
 
         if (_playerRigidbody.linearVelocity.y < -_maxFallSpeed)
-    {
-        _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, -_maxFallSpeed, _playerRigidbody.linearVelocity.z);
-    }
+        {
+            _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, -_maxFallSpeed, _playerRigidbody.linearVelocity.z);
+        }
     }
 
     private void SetPlayerJumping()
@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviour
         return _isSliding;
     }
 
-public void SetMovementSpeed(float speed, float duration)
+    public void SetMovementSpeed(float speed, float duration)
     {
         _movementSpeed += speed;
         Invoke(nameof(ResetMovementSpeed), duration);
@@ -213,7 +213,7 @@ public void SetMovementSpeed(float speed, float duration)
         _movementSpeed = _startingMovementSpeed;
     }
 
-public void SetJumpForce(float force, float duration)
+    public void SetJumpForce(float force, float duration)
     {
         _jumpForce += force;
         Invoke(nameof(ResetJumpForce), duration);
@@ -227,6 +227,23 @@ public void SetJumpForce(float force, float duration)
     public Rigidbody GetPlayerRigidbody()
     {
         return _playerRigidbody;
+    }
+
+    public bool CanCatChase()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit,
+         _playerHeight * 0.5f + 0.2f, _groundLayer))
+        {
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer(Consts.Layers.FLOOR_LAYER))
+            {
+                return true;
+            }
+            else if (hit.collider.gameObject.layer == LayerMask.NameToLayer(Consts.Layers.GROUND_LAYER))
+            {
+                return false;
+            }
+        }
+        return false;
     }
 
     #endregion

@@ -1390,7 +1390,7 @@ MonoBehaviour:
   _playerHeight: 1
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 320
+    m_Bits: 64
   _groundDrag: 8
 --- !u!114 &288046301
 MonoBehaviour:
@@ -3815,8 +3815,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 564266882}
-  - component: {fileID: 564266885}
-  - component: {fileID: 564266884}
   - component: {fileID: 564266881}
   - component: {fileID: 564266880}
   - component: {fileID: 564266883}
@@ -3913,40 +3911,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &564266884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 564266879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03e99b11d8b47d54bad384f74ca43003, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CatStateController
-  _currentCatState: 1
---- !u!114 &564266885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 564266879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aad517a01d4576441953bb5638d4932f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CatController
-  _playerController: {fileID: 288046300}
-  _playerTransform: {fileID: 288046298}
-  _defaultSpeed: 5
-  _chaseSpeed: 7
-  _patrolRadius: 28
-  _waitTime: 6.75
-  _maxDestinationAttempts: 50
-  _chaseDistanceThreshold: 2.25
-  _chaseDistance: 2.75
 --- !u!1 &564378641
 GameObject:
   m_ObjectHideFlags: 0
@@ -11778,10 +11742,6 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 4f39af6373ea0cd4d9e0a8f4b7e38715, type: 2}
-    - target: {fileID: 5812855996981238297, guid: 69ef6ec9a0720ab4181a382ad028a657, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 6556756094914376358, guid: 69ef6ec9a0720ab4181a382ad028a657, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
