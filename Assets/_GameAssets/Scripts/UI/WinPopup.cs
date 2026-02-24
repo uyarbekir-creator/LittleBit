@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using MaskTransitions;
 
 public class WinPopup : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class WinPopup : MonoBehaviour
         
         _oneMoreButton.onClick.RemoveAllListeners();
         _oneMoreButton.onClick.AddListener(OnOneMoreButtonClicked);
+        _mainMenuButton.onClick.AddListener(() =>
+        {
+            TransitionManager.Instance.LoadLevel(Consts.SceneNames.MENU_SCENE);
+        });
         
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -29,6 +34,6 @@ public class WinPopup : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        SceneManager.LoadScene(Consts.SceneNames.GAME_SCENE);
+        TransitionManager.Instance.LoadLevel(Consts.SceneNames.GAME_SCENE);
     }
 }

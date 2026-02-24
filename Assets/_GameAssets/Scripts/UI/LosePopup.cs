@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using MaskTransitions;
 
 public class LosePopup : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class LosePopup : MonoBehaviour
         
         _tryAgainButton.onClick.RemoveAllListeners();
         _tryAgainButton.onClick.AddListener(OnTryAgainButtonClicked);
+        _mainMenuButton.onClick.AddListener(() =>
+        {
+            TransitionManager.Instance.LoadLevel(Consts.SceneNames.MENU_SCENE);
+        });
         
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -29,6 +34,6 @@ public class LosePopup : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        SceneManager.LoadScene(Consts.SceneNames.GAME_SCENE);
+        TransitionManager.Instance.LoadLevel(Consts.SceneNames.GAME_SCENE);
     }
 }

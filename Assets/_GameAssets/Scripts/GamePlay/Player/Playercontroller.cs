@@ -10,28 +10,24 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _orientationTransform;
 
     [Header("Movement Settings ")]
-
     [SerializeField] private KeyCode _movementkey;
     [SerializeField] private float _movementSpeed;
 
     [Header("Jump Settings ")]
-
     [SerializeField] private KeyCode _jumpkey;
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _jumpcooldown;
     [SerializeField] private float _airmultiplier;
     [SerializeField] private float _airDrag;
     [SerializeField] private bool _canJump;
-    [SerializeField] private float _maxFallSpeed = 5f;
+    [SerializeField] private float _maxFallSpeed = 25f;
 
     [Header("Slide Settings ")]
-
     [SerializeField] private KeyCode _slidekey;
     [SerializeField] private float _slidemultiplier;
     [SerializeField] private float _slideDrag;
     [SerializeField] private float _slidecooldown;
     [SerializeField] private bool _canSlide;
-
 
     [Header("Ground Check Settings ")]
     [SerializeField] private float _playerHeight;
@@ -42,11 +38,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _playerRigidbody;
 
     private float _startingMovementSpeed, _startingJumpForce;
-
     private float _horizontalInput, _verticalInput;
     private Vector3 _movementdirection;
     private bool _isSliding;
-
+    private bool _isInWater;
 
     private void Awake()
     {
@@ -56,7 +51,6 @@ public class PlayerController : MonoBehaviour
 
         _startingMovementSpeed = _movementSpeed;
         _startingJumpForce = _jumpForce;
-
     }
 
     private void Update()
@@ -70,7 +64,6 @@ public class PlayerController : MonoBehaviour
         setinputs();
         SetStates();
         SetPlayerDrag();
-
     }
 
     private void FixedUpdate()
@@ -78,28 +71,91 @@ public class PlayerController : MonoBehaviour
         if (GameManager.Instance.GetCurrentGameState() != GameState.Play
             && GameManager.Instance.GetCurrentGameState() != GameState.Resume)
         {
+            _playerRigidbody.linearVelocity = Vector3.zero;
             return;
         }
 
         setplayerMovement();
         LimitPlayerSpeed();
+        ApplyTerminalVelocity();
     }
+
+    private void ApplyTerminalVelocity()
+    {
+        if (_playerRigidbody.linearVelocity.y < -_maxFallSpeed)
+        {
+            _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, -_maxFallSpeed, _playerRigidbody.linearVelocity.z);
+        }
+    }
+
+    private void setplayerMovement()
+    {
+        _movementdirection = _orientationTransform.forward * _verticalInput
+        + _orientationTransform.right * _horizontalInput;
+
+        float forceMultiplier = _stateController.GetCurrentState() switch
+        {
+            PlayerState.Move => 1f,
+            PlayerState.Slide => _slidemultiplier,
+            PlayerState.Jump => _airmultiplier,
+            _ => 1f
+        };
+
+        float waterResistance = _isInWater ? 0.4f : 1f;
+
+        _playerRigidbody.AddForce(_movementdirection.normalized * _movementSpeed * forceMultiplier * waterResistance, ForceMode.Force);
+    }
+
+    private void SetPlayerDrag()
+    {
+        if (_isInWater)
+        {
+            _playerRigidbody.linearDamping = 2f;
+            return;
+        }
+
+        _playerRigidbody.linearDamping = _stateController.GetCurrentState() switch
+        {
+            PlayerState.Move => _groundDrag,
+            PlayerState.Slide => _slideDrag,
+            PlayerState.Jump => _airDrag,
+            _ => _playerRigidbody.linearDamping
+        };
+    }
+
+    private void LimitPlayerSpeed()
+    {
+        Vector3 flatVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);
+        float currentMaxSpeed = _isInWater ? _movementSpeed * 0.4f : _movementSpeed;
+
+        if (flatVelocity.magnitude > currentMaxSpeed)
+        {
+            Vector3 limitedVelocity = flatVelocity.normalized * currentMaxSpeed;
+            _playerRigidbody.linearVelocity = new Vector3(limitedVelocity.x, _playerRigidbody.linearVelocity.y, limitedVelocity.z);
+        }
+    }
+
+    private void SetPlayerJumping()
+    {
+        OnPlayerJumped?.Invoke();
+        _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);
+        _playerRigidbody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
+    }
+
+    private void ResetJumping()
+    {
+        _canJump = true;
+    }
+
     private void setinputs()
     {
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKeyDown(_slidekey))
-        {
-            _isSliding = true;
-        }
+        if (Input.GetKeyDown(_slidekey)) _isSliding = true;
+        else if (Input.GetKeyDown(_movementkey)) _isSliding = false;
 
-        else if (Input.GetKeyDown(_movementkey))
-        {
-            _isSliding = false;
-        }
-
-        else if (Input.GetKey(_jumpkey) && _canJump && IsGrounded())
+        if (Input.GetKey(_jumpkey) && _canJump && IsGrounded())
         {
             _canJump = false;
             SetPlayerJumping();
@@ -131,65 +187,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void setplayerMovement()
-    {
-        _movementdirection = _orientationTransform.forward * _verticalInput
-        + _orientationTransform.right * _horizontalInput;
-
-        float forceMultiplier = _stateController.GetCurrentState() switch
-        {
-            PlayerState.Move => 1f,
-            PlayerState.Slide => _slidemultiplier,
-            PlayerState.Jump => _airmultiplier,
-            _ => 1f
-        };
-
-        _playerRigidbody.AddForce(_movementdirection.normalized * _movementSpeed * forceMultiplier, ForceMode.Force);
-    }
-
-
-    private void SetPlayerDrag()
-    {
-
-        _playerRigidbody.linearDamping = _stateController.GetCurrentState() switch
-        {
-            PlayerState.Move => _groundDrag,
-            PlayerState.Slide => _slideDrag,
-            PlayerState.Jump => _airDrag,
-            _ => _playerRigidbody.linearDamping
-        };
-    }
-    private void LimitPlayerSpeed()
-    {
-        Vector3 flatVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);
-        if (flatVelocity.magnitude > _movementSpeed)
-        {
-            Vector3 limitedVelocity = flatVelocity.normalized * _movementSpeed;
-            _playerRigidbody.linearVelocity = new Vector3(limitedVelocity.x, _playerRigidbody.linearVelocity.y, limitedVelocity.z);
-        }
-
-        if (_playerRigidbody.linearVelocity.y < -_maxFallSpeed)
-        {
-            _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, -_maxFallSpeed, _playerRigidbody.linearVelocity.z);
-        }
-    }
-
-    private void SetPlayerJumping()
-    {
-        OnPlayerJumped?.Invoke();
-        _playerRigidbody.linearVelocity = new Vector3(_playerRigidbody.linearVelocity.x, 0f, _playerRigidbody.linearVelocity.z);
-        _playerRigidbody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
-    }
-    private void ResetJumping()
-    {
-        _canJump = true;
-    }
-
     #region Helper Functions
 
     private bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f + 0.22f, _groundLayer);
+        Vector3 spherePosition = transform.position + Vector3.down * (_playerHeight * 0.5f);
+        return Physics.CheckSphere(spherePosition, 0.2f, _groundLayer, QueryTriggerInteraction.Collide);
     }
 
     private Vector3 GetMovementDirection()
@@ -232,7 +235,7 @@ public class PlayerController : MonoBehaviour
     public bool CanCatChase()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit,
-         _playerHeight * 0.5f + 0.2f, _groundLayer))
+          _playerHeight * 0.5f + 0.2f, _groundLayer))
         {
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer(Consts.Layers.FLOOR_LAYER))
             {
@@ -246,6 +249,21 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    #endregion
+    private void OnTriggerEnter(Collider other)
+    {
+        if (((1 << other.gameObject.layer) & _groundLayer) != 0)
+        {
+            _isInWater = true;
+        }
+    }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (((1 << other.gameObject.layer) & _groundLayer) != 0)
+        {
+            _isInWater = false;
+        }
+    }
+
+    #endregion
 }

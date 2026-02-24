@@ -9,25 +9,30 @@ public class ThirdPersonCameraController : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float _mouseSensitivity = 1.5f;
-    [SerializeField] private float _rotationSpeed = 8f; 
-    
+    [SerializeField] private float _rotationSpeed = 8f;
+
     [Header("Smoothness")]
-    [Range(0, 0.2f)] [SerializeField] private float _cameraSmoothTime = 0.05f; 
-    
+    [Range(0, 0.2f)][SerializeField] private float _cameraSmoothTime = 0.05f;
+
     private float _yRotation;
     private float _xRotation;
     private float _currentYRotation;
     private float _yRotationVelocity;
+    private Rigidbody _playerRigidbody;
 
     private void Start()
     {
+        _playerRigidbody = _playerTransform.GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    private void LateUpdate() 
+    private void LateUpdate()
     {
-        if (GameManager.Instance.GetCurrentGameState() != GameState.Play) return;
+        if (GameManager.Instance.GetCurrentGameState() != GameState.Play && GameManager.Instance.GetCurrentGameState() != GameState.Resume) return;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         _yRotation += Input.GetAxisRaw("Mouse X") * _mouseSensitivity;
         _xRotation -= Input.GetAxisRaw("Mouse Y") * _mouseSensitivity;
@@ -35,7 +40,7 @@ public class ThirdPersonCameraController : MonoBehaviour
 
         _currentYRotation = Mathf.SmoothDampAngle(_currentYRotation, _yRotation, ref _yRotationVelocity, _cameraSmoothTime);
 
-        _playerTransform.rotation = Quaternion.Euler(0, _currentYRotation, 0);
+        _playerRigidbody.MoveRotation(Quaternion.Euler(0, _currentYRotation, 0));
         _orientationTransform.rotation = Quaternion.Euler(0, _currentYRotation, 0);
 
         float h = Input.GetAxisRaw("Horizontal");
