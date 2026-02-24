@@ -21,6 +21,9 @@ public class GameManager : MonoBehaviour
     private GameState _currentGameState;
 
     private int _currentEggCount;
+
+    private bool _isCatCatched;
+
     private void Awake()
     {
         Instance = this;
@@ -34,8 +37,13 @@ public class GameManager : MonoBehaviour
 
     private void CatController_OnCatCatched()
     {
-        _playerHealthUI.AnimateDamageForAll();
-        StartCoroutine(OnGameOver());
+        if(!_isCatCatched)
+        {
+            _playerHealthUI.AnimateDamageForAll();
+            StartCoroutine(OnGameOver());
+            CameraShake.Instance.ShakeCamera(1f, 1f);
+        }
+        
     }
 
     private void HealthManager_OnPlayerDeath()

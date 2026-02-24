@@ -14,6 +14,12 @@ public class LosePopup : MonoBehaviour
 
     private void OnEnable() 
     {
+        // Kamera sarsıntısını durdur
+        if (CameraShake.Instance != null)
+        {
+            CameraShake.Instance.ResetShake();
+        }
+
         _timerText.text = _timerUI.GetFinalTime();
         
         _tryAgainButton.onClick.RemoveAllListeners();
