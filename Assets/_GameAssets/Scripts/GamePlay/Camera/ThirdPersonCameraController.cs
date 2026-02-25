@@ -25,14 +25,14 @@ public class ThirdPersonCameraController : MonoBehaviour
         _playerRigidbody = _playerTransform.GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        _yRotation = _playerTransform.eulerAngles.y;
+        _currentYRotation = _yRotation;
     }
 
     private void LateUpdate()
     {
         if (GameManager.Instance.GetCurrentGameState() != GameState.Play && GameManager.Instance.GetCurrentGameState() != GameState.Resume) return;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
 
         _yRotation += Input.GetAxisRaw("Mouse X") * _mouseSensitivity;
         _xRotation -= Input.GetAxisRaw("Mouse Y") * _mouseSensitivity;
