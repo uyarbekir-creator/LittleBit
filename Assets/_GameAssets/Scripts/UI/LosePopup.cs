@@ -14,7 +14,8 @@ public class LosePopup : MonoBehaviour
 
     private void OnEnable() 
     {
-        // Kamera sarsıntısını durdur
+        BackgroundMusic.Instance.PlayBackgroundMusic(false);
+        AudioManager.Instance.Play(SoundType.LoseSound);
         if (CameraShake.Instance != null)
         {
             CameraShake.Instance.ResetShake();
@@ -26,6 +27,7 @@ public class LosePopup : MonoBehaviour
         _tryAgainButton.onClick.AddListener(OnTryAgainButtonClicked);
         _mainMenuButton.onClick.AddListener(() =>
         {
+            AudioManager.Instance.Play(SoundType.TransitionSound);
             TransitionManager.Instance.LoadLevel(Consts.SceneNames.MENU_SCENE);
         });
         
@@ -35,6 +37,7 @@ public class LosePopup : MonoBehaviour
 
     private void OnTryAgainButtonClicked()
     {
+        AudioManager.Instance.Play(SoundType.TransitionSound);
         Time.timeScale = 1f; 
         
         Cursor.lockState = CursorLockMode.Locked;

@@ -27,6 +27,7 @@ public class HolyWheatCollectible : MonoBehaviour, ICollectible
         _wheatDesignSO.PassiveWheatSprite, _wheatDesignSO.ResetBoostDuration);
         
         CameraShake.Instance.ShakeCamera(1f, 1f);
+        AudioManager.Instance.Play(SoundType.PickupGoodSound);
         
         Destroy(gameObject);
 

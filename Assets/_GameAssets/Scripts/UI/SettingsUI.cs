@@ -33,6 +33,7 @@ public class SettingsUI : MonoBehaviour
 
         _mainMenuButton.onClick.AddListener(() =>
         {
+            AudioManager.Instance.Play(SoundType.TransitionSound);
             TransitionManager.Instance.LoadLevel(Consts.SceneNames.MENU_SCENE);
         });
     }
@@ -55,8 +56,10 @@ public class SettingsUI : MonoBehaviour
     private void OnSettingsButtonClicked()
     {
         if (_isSettingsOpen) return;
-        _isSettingsOpen = true;
+
+        AudioManager.Instance.Play(SoundType.ButtonClickSound);
         
+        _isSettingsOpen = true;
         GameManager.Instance.ChangeGameState(GameState.Pause);
         
         _blackBackgroundObject.SetActive(true);
@@ -71,8 +74,10 @@ public class SettingsUI : MonoBehaviour
     private void OnResumeButtonClicked()
     {
         if (!_isSettingsOpen) return;
-        _isSettingsOpen = false;
+
+        AudioManager.Instance.Play(SoundType.TransitionSound);
         
+        _isSettingsOpen = false;
         GameManager.Instance.ChangeGameState(GameState.Resume);
         ToggleCursor(false);
 

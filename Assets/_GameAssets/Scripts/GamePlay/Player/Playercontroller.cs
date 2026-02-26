@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        setinputs();
+        SetInputs();
         SetStates();
         SetPlayerDrag();
     }
@@ -147,7 +147,7 @@ public class PlayerController : MonoBehaviour
         _canJump = true;
     }
 
-    private void setinputs()
+    private void SetInputs()
     {
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
@@ -160,6 +160,7 @@ public class PlayerController : MonoBehaviour
             _canJump = false;
             SetPlayerJumping();
             Invoke(nameof(ResetJumping), _jumpcooldown);
+            AudioManager.Instance.Play(SoundType.JumpSound);
         }
     }
 
