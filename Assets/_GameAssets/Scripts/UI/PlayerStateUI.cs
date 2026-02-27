@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.Playables;
 using System;
+using MagicPigGames;
 
 public class PlayerStateUI : MonoBehaviour
 {
@@ -16,12 +17,14 @@ public class PlayerStateUI : MonoBehaviour
     [SerializeField] private RectTransform _boosterSlowTransform;
     [SerializeField] private PlayableDirector _playableDirector;
     
+    [Header("Sliding Stamina UI")]
+    [SerializeField] private HorizontalProgressBar _staminaProgressBar;
+    [SerializeField] private GameObject _shiftKeyIconObject;
 
     [Header("Images")]
     [SerializeField] private Image _goldboosterWheatImage;
     [SerializeField] private Image _holyboosterWheatImage;
     [SerializeField] private Image _rottenboosterWheatImage;
-
 
     [Header("Sprites")]
     [SerializeField] private Sprite _playerWalkingActiveSprite;
@@ -46,21 +49,33 @@ public class PlayerStateUI : MonoBehaviour
 
     private void Awake()
     {
-        _playerWalkingImage = _playerWalkingTransform.GetComponent<Image>();
-        _playerSlidingImage = _playerSlidingTransform.GetComponent<Image>();
+        if (_playerWalkingTransform != null) _playerWalkingImage = _playerWalkingTransform.GetComponent<Image>();
+        if (_playerSlidingTransform != null) _playerSlidingImage = _playerSlidingTransform.GetComponent<Image>();
     }
 
     private void Start()
     {
-        _playableDirector.stopped += OnTimelineFinished;
-        _playerController.OnPlayerStateChanged += PlayerController_OnPlayerStateChanged;
+        if (_playableDirector != null) _playableDirector.stopped += OnTimelineFinished;
+        if (_playerController != null) _playerController.OnPlayerStateChanged += PlayerController_OnPlayerStateChanged;
+    }
 
+    private void Update()
+    {
+        UpdateStaminaUI();
+    }
+
+    private void UpdateStaminaUI()
+    {
+        if (_staminaProgressBar != null && _playerController != null)
+        {
+            float staminaRatio = _playerController.GetStaminaNormalized();
+            _staminaProgressBar.SetProgress(staminaRatio);
+        }
     }
 
     private void OnTimelineFinished(PlayableDirector director)
     {
         SetStateUserInterfaces(_playerWalkingActiveSprite, _playerSlidingPassiveSprite, _playerWalkingTransform, _playerSlidingTransform);
-
     }
 
     private void PlayerController_OnPlayerStateChanged(PlayerState playerState)
@@ -82,11 +97,16 @@ public class PlayerStateUI : MonoBehaviour
     private void SetStateUserInterfaces(Sprite playerWalkingSprite, Sprite playerSlidingSprite,
         RectTransform activeTransform, RectTransform passiveTransform)
     {
+        if (_playerWalkingImage == null || _playerSlidingImage == null) return;
+
         _playerWalkingImage.sprite = playerWalkingSprite;
         _playerSlidingImage.sprite = playerSlidingSprite;
 
-        activeTransform.DOAnchorPosX(-25f, _moveDuration).SetEase(_moveEase);
-        passiveTransform.DOAnchorPosX(-90f, _moveDuration).SetEase(_moveEase);
+        activeTransform.DOKill();
+        passiveTransform.DOKill();
+
+        activeTransform.DOAnchorPosX(-25f, _moveDuration).SetEase(_moveEase).SetLink(activeTransform.gameObject);
+        passiveTransform.DOAnchorPosX(-90f, _moveDuration).SetEase(_moveEase).SetLink(passiveTransform.gameObject);
     }
 
     private IEnumerator SetBoosterUserInterfaces(RectTransform activeTransform, Image boosterImage,
@@ -96,11 +116,14 @@ public class PlayerStateUI : MonoBehaviour
         boosterImage.sprite = activeSprite;
         wheatImage.sprite = activeWheatSprite;
 
-        activeTransform.DOAnchorPosX(25f, _moveDuration).SetEase(_moveEase);
+        activeTransform.DOKill();
+        activeTransform.DOAnchorPosX(25f, _moveDuration).SetEase(_moveEase).SetLink(activeTransform.gameObject);
+        
         yield return new WaitForSeconds(duration);
+        
         boosterImage.sprite = passiveSprite;
         wheatImage.sprite = passiveWheatSprite;
-        activeTransform.DOAnchorPosX(90f, _moveDuration).SetEase(_moveEase);
+        activeTransform.DOAnchorPosX(90f, _moveDuration).SetEase(_moveEase).SetLink(activeTransform.gameObject);
     }
 
     public void PlayBoosterUIAnimations(RectTransform activeTransform, Image boosterImage,
@@ -111,4 +134,9 @@ public class PlayerStateUI : MonoBehaviour
         activeWheatSprite, passiveWheatSprite, duration));
     }
 
+    private void OnDestroy()
+    {
+        if (_playableDirector != null) _playableDirector.stopped -= OnTimelineFinished;
+        if (_playerController != null) _playerController.OnPlayerStateChanged -= PlayerController_OnPlayerStateChanged;
+    }
 }

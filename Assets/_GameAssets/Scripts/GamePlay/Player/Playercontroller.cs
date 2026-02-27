@@ -3,17 +3,17 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
+    // ... Mevcut event ve değişkenlerin (Değişiklik yok) ...
     public event Action OnPlayerJumped;
     public event Action<PlayerState> OnPlayerStateChanged;
 
     [Header("References")]
     [SerializeField] private Transform _orientationTransform;
 
-    [Header("Movement Settings ")]
-    [SerializeField] private KeyCode _movementkey;
+    [Header("Movement Settings")]
     [SerializeField] private float _movementSpeed;
 
-    [Header("Jump Settings ")]
+    [Header("Jump Settings")]
     [SerializeField] private KeyCode _jumpkey;
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _jumpcooldown;
@@ -22,14 +22,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool _canJump;
     [SerializeField] private float _maxFallSpeed = 25f;
 
-    [Header("Slide Settings ")]
-    [SerializeField] private KeyCode _slidekey;
+    [Header("Slide (Stamina) Settings")]
+    [SerializeField] private KeyCode _slidekey = KeyCode.LeftShift;
     [SerializeField] private float _slidemultiplier;
     [SerializeField] private float _slideDrag;
-    [SerializeField] private float _slidecooldown;
-    [SerializeField] private bool _canSlide;
+    [SerializeField] private float _maxSlideStamina = 5f;
+    [SerializeField] private float _staminaRegenMultiplier = 1.5f;
 
-    [Header("Ground Check Settings ")]
+    [Header("Ground Check Settings")]
     [SerializeField] private float _playerHeight;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private float _groundDrag;
@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 _movementdirection;
     private bool _isSliding;
     private bool _isInWater;
+    private float _currentSlideStamina;
 
     private void Awake()
     {
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
         _startingMovementSpeed = _movementSpeed;
         _startingJumpForce = _jumpForce;
+        _currentSlideStamina = _maxSlideStamina;
     }
 
     private void Update()
@@ -64,6 +66,7 @@ public class PlayerController : MonoBehaviour
         SetInputs();
         SetStates();
         SetPlayerDrag();
+        HandleStamina();
     }
 
     private void FixedUpdate()
@@ -78,6 +81,27 @@ public class PlayerController : MonoBehaviour
         setplayerMovement();
         LimitPlayerSpeed();
         ApplyTerminalVelocity();
+    }
+
+    private void HandleStamina()
+    {
+        if (_isSliding)
+        {
+            _currentSlideStamina -= Time.deltaTime;
+            if (_currentSlideStamina <= 0)
+            {
+                _currentSlideStamina = 0;
+                _isSliding = false;
+            }
+        }
+        else
+        {
+            if (_currentSlideStamina < _maxSlideStamina)
+            {
+                _currentSlideStamina += Time.deltaTime * _staminaRegenMultiplier;
+                _currentSlideStamina = Mathf.Min(_currentSlideStamina, _maxSlideStamina);
+            }
+        }
     }
 
     private void ApplyTerminalVelocity()
@@ -97,6 +121,7 @@ public class PlayerController : MonoBehaviour
         {
             PlayerState.Move => 1f,
             PlayerState.Slide => _slidemultiplier,
+            PlayerState.SlideIdle => _slidemultiplier,
             PlayerState.Jump => _airmultiplier,
             _ => 1f
         };
@@ -118,6 +143,7 @@ public class PlayerController : MonoBehaviour
         {
             PlayerState.Move => _groundDrag,
             PlayerState.Slide => _slideDrag,
+            PlayerState.SlideIdle => _slideDrag,
             PlayerState.Jump => _airDrag,
             _ => _playerRigidbody.linearDamping
         };
@@ -152,8 +178,14 @@ public class PlayerController : MonoBehaviour
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKeyDown(_slidekey)) _isSliding = true;
-        else if (Input.GetKeyDown(_movementkey)) _isSliding = false;
+        if (Input.GetKey(_slidekey) && _currentSlideStamina > 0 && IsGrounded())
+        {
+            _isSliding = true;
+        }
+        else
+        {
+            _isSliding = false;
+        }
 
         if (Input.GetKey(_jumpkey) && _canJump && IsGrounded())
         {
@@ -185,7 +217,26 @@ public class PlayerController : MonoBehaviour
         {
             _stateController.ChangeState(newState);
             OnPlayerStateChanged?.Invoke(newState);
+
+            // --- MUZIK TUNE AYARI ---
+            // Sliding basladiginda muzigi hizlandiriyoruz, bitince normale donduruyoruz
+            if (BackgroundMusic.Instance != null)
+            {
+                if (newState == PlayerState.Slide || newState == PlayerState.SlideIdle)
+                {
+                    BackgroundMusic.Instance.SetPitch(1.25f, 0.4f); // %25 hizlanma
+                }
+                else if (currentState == PlayerState.Slide || currentState == PlayerState.SlideIdle)
+                {
+                    BackgroundMusic.Instance.SetPitch(1.0f, 0.6f); // Normale donus
+                }
+            }
         }
+    }
+
+    public float GetStaminaNormalized()
+    {
+        return _currentSlideStamina / _maxSlideStamina;
     }
 
     #region Helper Functions

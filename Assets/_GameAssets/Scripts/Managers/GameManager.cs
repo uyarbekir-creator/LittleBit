@@ -18,32 +18,62 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int _maxEggcount = 5;
     [SerializeField] private float _delay;
 
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip _gameSceneMusic; // Oyun sahnesi için seçtiğin müziği buraya sürükle
+
     private GameState _currentGameState;
-
     private int _currentEggCount;
-
     private bool _isCatCatched;
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
     {
-        HealthManager.Instance.OnPlayerDeath += HealthManager_OnPlayerDeath;
-        _catController.OnCatCatched += CatController_OnCatCatched;
+        // BackgroundMusic referansını kullanarak müziği değiştiriyoruz
+        if (BackgroundMusic.Instance != null && _gameSceneMusic != null)
+        {
+            BackgroundMusic.Instance.ChangeMusic(_gameSceneMusic);
+        }
+        else if (BackgroundMusic.Instance != null)
+        {
+            BackgroundMusic.Instance.PlayBackgroundMusic(true);
+        }
+
+        if (HealthManager.Instance != null)
+        {
+            HealthManager.Instance.OnPlayerDeath += HealthManager_OnPlayerDeath;
+        }
+
+        if (_catController != null)
+        {
+            _catController.OnCatCatched += CatController_OnCatCatched;
+        }
+    }
+
+    private void OnEnable()
+    {
+        ChangeGameState(GameState.Cutscene);
     }
 
     private void CatController_OnCatCatched()
     {
-        if(!_isCatCatched)
+        if (!_isCatCatched)
         {
+            _isCatCatched = true;
             _playerHealthUI.AnimateDamageForAll();
             StartCoroutine(OnGameOver(true));
             CameraShake.Instance.ShakeCamera(1f, 1f);
         }
-        
     }
 
     private void HealthManager_OnPlayerDeath()
@@ -51,16 +81,13 @@ public class GameManager : MonoBehaviour
         StartCoroutine(OnGameOver(false));
     }
 
-    private void OnEnable()
-    {
-        ChangeGameState(GameState.Cutscene);
-        BackgroundMusic.Instance.PlayBackgroundMusic(true);
-    }
-
     public void ChangeGameState(GameState gamestate)
     {
-        OnGameStateChanged?.Invoke(gamestate);
         _currentGameState = gamestate;
+        OnGameStateChanged?.Invoke(gamestate);
+
+        // İpucu: Eğer Game Over olduğunda müziğin durmasını istersen buraya ekleyebilirsin:
+        // if(gamestate == GameState.GameOver && BackgroundMusic.Instance != null) BackgroundMusic.Instance.PlayBackgroundMusic(false);
     }
 
     public void OnEggCollected()
@@ -74,7 +101,6 @@ public class GameManager : MonoBehaviour
             ChangeGameState(GameState.GameOver);
             _winLoseUI.OnGameWin();
         }
-
     }
 
     private IEnumerator OnGameOver(bool isCatCatched)
@@ -83,16 +109,27 @@ public class GameManager : MonoBehaviour
         ChangeGameState(GameState.GameOver);
         _winLoseUI.OnGameLose();
         
-        if(isCatCatched)
+        if (isCatCatched)
         {
             AudioManager.Instance.Play(SoundType.CatSound);
         }
     }
-
 
     public GameState GetCurrentGameState()
     {
         return _currentGameState;
     }
 
+    private void OnDisable()
+    {
+        if (HealthManager.Instance != null)
+        {
+            HealthManager.Instance.OnPlayerDeath -= HealthManager_OnPlayerDeath;
+        }
+
+        if (_catController != null)
+        {
+            _catController.OnCatCatched -= CatController_OnCatCatched;
+        }
+    }
 }
