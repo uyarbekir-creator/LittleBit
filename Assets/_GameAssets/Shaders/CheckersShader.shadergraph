@@ -590,7 +590,7 @@
     "m_Hidden": false,
     "m_PerRendererData": false,
     "m_customAttributes": [],
-    "m_Value": 0.0,
+    "m_Value": 1.0,
     "m_FloatType": 0,
     "m_LiteralFloatMode": false,
     "m_RangeValues": {
@@ -723,12 +723,12 @@
     "m_CustomSlotLabel": "",
     "m_DismissedVersion": 0,
     "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
+    "overrideHLSLDeclaration": true,
+    "hlslDeclarationOverride": 2,
     "m_Hidden": false,
     "m_PerRendererData": false,
     "m_customAttributes": [],
-    "m_Value": 0.0,
+    "m_Value": 1.0,
     "m_FloatType": 0,
     "m_LiteralFloatMode": false,
     "m_RangeValues": {
@@ -1193,9 +1193,9 @@
     "m_PerRendererData": false,
     "m_customAttributes": [],
     "m_Value": {
-        "r": 0.009611962363123894,
-        "g": 0.12735849618911744,
-        "b": 0.009611962363123894,
+        "r": 0.0006007476476952434,
+        "g": 0.00795990601181984,
+        "b": 0.0006007476476952434,
         "a": 1.0
     },
     "isMainColor": false,
@@ -1272,9 +1272,9 @@
     "m_PerRendererData": false,
     "m_customAttributes": [],
     "m_Value": {
-        "r": 0.8113207817077637,
-        "g": 0.5587397813796997,
-        "b": 0.5587397813796997,
+        "r": 0.37840667366981509,
+        "g": 0.2655785381793976,
+        "b": 0.1558844894170761,
         "a": 1.0
     },
     "isMainColor": false,
