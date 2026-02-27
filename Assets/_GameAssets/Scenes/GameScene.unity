@@ -1867,6 +1867,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 305321979}
+  - component: {fileID: 305321984}
   - component: {fileID: 305321982}
   - component: {fileID: 305321981}
   - component: {fileID: 305321980}
@@ -2002,6 +2003,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &305321984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305321978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfc59c6574448043a7cd65063aee842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverController
 --- !u!4 &309452886 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4681472184047346648, guid: ea106617c94cd36439465c32ceaeb65b, type: 3}
@@ -5846,6 +5859,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 720713549}
+  - component: {fileID: 720713553}
   - component: {fileID: 720713552}
   - component: {fileID: 720713551}
   - component: {fileID: 720713550}
@@ -5958,6 +5972,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 720713548}
   m_CullTransparentMesh: 1
+--- !u!114 &720713553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720713548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfc59c6574448043a7cd65063aee842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverController
 --- !u!208 &722646021
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -6050,6 +6076,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 746912618}
+  - component: {fileID: 746912622}
   - component: {fileID: 746912621}
   - component: {fileID: 746912620}
   - component: {fileID: 746912619}
@@ -6161,6 +6188,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 746912617}
   m_CullTransparentMesh: 1
+--- !u!114 &746912622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746912617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfc59c6574448043a7cd65063aee842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverController
 --- !u!4 &753280140 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 146826493860477866, guid: 5f43fe212de0886488f91348c2fdd6d3, type: 3}
@@ -6301,6 +6340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 773600887}
+  - component: {fileID: 773600888}
   m_Layer: 5
   m_Name: SoundsButtons
   m_TagString: Untagged
@@ -6329,6 +6369,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &773600888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773600886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfc59c6574448043a7cd65063aee842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverController
 --- !u!1 &776558915
 GameObject:
   m_ObjectHideFlags: 0
@@ -7624,6 +7676,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 926624066}
+  - component: {fileID: 926624071}
   - component: {fileID: 926624069}
   - component: {fileID: 926624068}
   - component: {fileID: 926624067}
@@ -7759,6 +7812,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &926624071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 926624065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfc59c6574448043a7cd65063aee842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverController
 --- !u!1 &927221545
 GameObject:
   m_ObjectHideFlags: 0
@@ -10074,6 +10139,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1392136089}
+  - component: {fileID: 1392136093}
   - component: {fileID: 1392136092}
   - component: {fileID: 1392136091}
   - component: {fileID: 1392136090}
@@ -10185,6 +10251,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1392136088}
   m_CullTransparentMesh: 1
+--- !u!114 &1392136093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392136088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfc59c6574448043a7cd65063aee842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverController
 --- !u!208 &1395257744
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -10857,6 +10935,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1455443084}
+  - component: {fileID: 1455443089}
   - component: {fileID: 1455443087}
   - component: {fileID: 1455443086}
   - component: {fileID: 1455443085}
@@ -10992,6 +11071,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1455443089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455443083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfc59c6574448043a7cd65063aee842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverController
 --- !u!208 &1457444165
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -11339,6 +11430,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1498720729}
+  - component: {fileID: 1498720733}
   - component: {fileID: 1498720732}
   - component: {fileID: 1498720731}
   - component: {fileID: 1498720730}
@@ -11451,6 +11543,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1498720728}
   m_CullTransparentMesh: 1
+--- !u!114 &1498720733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1498720728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfc59c6574448043a7cd65063aee842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverController
 --- !u!1 &1514007281
 GameObject:
   m_ObjectHideFlags: 0
@@ -14980,6 +15084,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1998494988}
+  - component: {fileID: 1998494993}
   - component: {fileID: 1998494991}
   - component: {fileID: 1998494990}
   - component: {fileID: 1998494989}
@@ -15115,6 +15220,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1998494993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998494987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfc59c6574448043a7cd65063aee842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonHoverController
 --- !u!1001 &2017474252
 PrefabInstance:
   m_ObjectHideFlags: 0
