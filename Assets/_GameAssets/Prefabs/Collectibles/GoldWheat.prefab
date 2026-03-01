@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6562471779022526122}
+  - component: {fileID: 2168027094024458056}
   - component: {fileID: 8212846023538798433}
   - component: {fileID: 3131653912413782502}
   - component: {fileID: 2214161745725113777}
@@ -30,10 +31,25 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 146826493860477866}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2168027094024458056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6624198188625359939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1f29d8839b01944ae16d636c0d5102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightningFlicker
+  minIntensity: 1
+  maxIntensity: 10
+  flickerSpeed: 0.05
 --- !u!33 &8212846023538798433
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -41,7 +57,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6624198188625359939}
-  m_Mesh: {fileID: -4281583460005227431, guid: c9e6df82218dbeb4caa03ac667c5d218, type: 3}
+  m_Mesh: {fileID: 7629811779324647873, guid: 3bfa8d404b169ef4781b6e5ed9c2464e, type: 3}
 --- !u!23 &3131653912413782502
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -67,7 +83,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8c6ee3ecc50d7dd4aa1e414d48955617, type: 2}
+  - {fileID: -8255238290054749120, guid: 48381f5d3c35a554f9ea14e890f4afaa, type: 3}
+  - {fileID: 2100000, guid: b3592acde6578954e81994d4dc4d1b1a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -141,8 +158,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6562471779022526122}
   m_Father: {fileID: 0}
@@ -161,6 +178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GoldWheatCollectible
   _wheatDesignSO: {fileID: 11400000, guid: 5be9439b75e212147af3bf00653ebb08, type: 2}
   _playerController: {fileID: 0}
+  _playerStateUI: {fileID: 0}
 --- !u!65 &123031237778130421
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -168,7 +186,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7539512203972317426}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2ce0a69327e4d5945b25a666c3e26980, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -180,5 +198,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.90845895, y: 1.177239, z: 0.2832534}
-  m_Center: {x: 0.024345994, y: -0.1801605, z: 0.015581444}
+  m_Size: {x: 4.43138, y: 7.1195006, z: 1.1621411}
+  m_Center: {x: 0.036167797, y: 0.4526341, z: -0.029259749}
