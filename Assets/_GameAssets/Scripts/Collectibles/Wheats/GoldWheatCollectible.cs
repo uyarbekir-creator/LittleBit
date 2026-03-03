@@ -9,10 +9,20 @@ public class GoldWheatCollectible : MonoBehaviour, ICollectible
 
     private RectTransform _playerBoosterTransform;
     private Image _playerboosterImage;
+
     private void Awake()
     {
         _playerBoosterTransform = _playerStateUI.GetBoosterSpeedTransform;
         _playerboosterImage = _playerBoosterTransform.GetComponent<Image>();
+    }
+
+    // SADECE BU TETİKLEYİCİ EKLENDİ
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Collect();
+        }
     }
 
     public void Collect()
@@ -26,6 +36,9 @@ public class GoldWheatCollectible : MonoBehaviour, ICollectible
 
         CameraShake.Instance.ShakeCamera(1f, 1f);
         AudioManager.Instance.Play(SoundType.PickupGoodSound);
+
+        // SADECE BU SATIR EKLENDİ (Manager'a haber verip yenisini çıkartmak için)
+        FindObjectOfType<BoosterManager>()?.SpawnRandomBooster();
 
         Destroy(gameObject);
     }

@@ -2,41 +2,40 @@ using UnityEngine;
 
 public class RadiationGlow : MonoBehaviour
 {
+    [Header("Dönme Ayarları")]
+    public float rotationSpeed = 100f; // [cite: 2026-03-01]
+
     [Header("Parlama Ayarları")]
-    public Color hazardRed = Color.red; 
-    public float pulseSpeed = 3f; 
-    public float minIntensity = 2f;
-    public float maxIntensity = 8f;
+    public Color hazardRed = Color.red; // [cite: 2026-03-01]
+    public float pulseSpeed = 3f; // [cite: 2026-03-01]
+    public float minIntensity = 2f; // [cite: 2026-03-01]
+    public float maxIntensity = 8f; // [cite: 2026-03-01]
 
     private Material _material;
     private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
     void Start()
     {
-        // Mesh Renderer'a ulaş ve materyali kontrol et
         Renderer renderer = GetComponent<Renderer>();
         if (renderer != null)
         {
-            // Materyalin bir kopyasını oluştur (diğer objeleri etkilememesi için)
+            // Materyalin bir kopyasını oluştur (diğer objeleri etkilememesi için) [cite: 2026-03-01]
             _material = renderer.material;
-            // Emission kanalını aktif et
-            _material.EnableKeyword("_EMISSION");
-        }
-        else
-        {
-            Debug.LogError("Hata: " + gameObject.name + " üzerinde Renderer bulunamadı!");
+            _material.EnableKeyword("_EMISSION"); // [cite: 2026-03-01]
         }
     }
 
     void Update()
     {
+        // 1. Kendi ekseni etrafında (Y ekseni) döndür [cite: 2026-03-01]
+        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+
+        // 2. Parlama efektini uygula [cite: 2026-03-01]
         if (_material != null)
         {
-            // PingPong ile min ve max arasında yumuşak bir değer oluşturuyoruz
             float lerp = Mathf.PingPong(Time.time * pulseSpeed, 1f);
             float intensity = Mathf.Lerp(minIntensity, maxIntensity, lerp);
             
-            // Materyale rengi ve parlaklığı uygula
             _material.SetColor(EmissionColor, hazardRed * intensity);
         }
     }

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2168027094024458056}
   - component: {fileID: 8212846023538798433}
   - component: {fileID: 3131653912413782502}
-  - component: {fileID: 2214161745725113777}
   m_Layer: 0
   m_Name: GoldWheatVisual
   m_TagString: Untagged
@@ -47,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1f29d8839b01944ae16d636c0d5102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LightningFlicker
+  rotationSpeed: 100
   minIntensity: 1
   maxIntensity: 10
   flickerSpeed: 0.05
@@ -108,28 +108,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!95 &2214161745725113777
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6624198188625359939}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6e8d918d494a66c43885f62b72af915e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7539512203972317426
 GameObject:
   m_ObjectHideFlags: 0

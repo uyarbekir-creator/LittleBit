@@ -4,6 +4,10 @@ public class LightningFlicker : MonoBehaviour
 {
     private Material _material;
 
+    [Header("Dönme Ayarları")]
+    [Tooltip("Yıldırımın kendi ekseninde dönme hızı")]
+    public float rotationSpeed = 150f;
+
     [Header("Parlaklik Ayarlari")]
     [Tooltip("Minimum parlaklik degeri (Normal gorunum)")]
     public float minIntensity = 1f;
@@ -16,41 +20,38 @@ public class LightningFlicker : MonoBehaviour
     public float flickerSpeed = 0.05f;
 
     private float _nextActionTime = 0f;
+    private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
     private void Start()
     {
-        // Kodun calismasi icin bu objede MeshRenderer olmalidir
         Renderer renderer = GetComponent<Renderer>();
 
         if (renderer != null)
         {
-            // .material kullanmak bu objeye ozel bir kopya olusturur
             _material = renderer.material;
-
-            // URP materyallerinde emisyonu kodla kontrol etmek icin bu anahtar sarttir
             _material.EnableKeyword("_EMISSION");
         }
         else
         {
-            Debug.LogError("LightningFlicker: Bu objede MeshRenderer bulunamadi! Lutfen scripti gorsel modele (Visual) atin.");
+            Debug.LogError("LightningFlicker: Bu objede MeshRenderer bulunamadi!");
         }
     }
 
     private void Update()
     {
+        // 1. DÖNME EFEKTİ
+        // Yıldırımın dik durduğunu varsayarak Y ekseninde (up) döndürüyoruz
+        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime, Space.Self);
+
+        // 2. ÇAKMA/TİTREME (FLICKER) EFEKTİ
         if (_material != null && Time.time > _nextActionTime)
         {
-            // Bir sonraki degisim zamanini belirle
             _nextActionTime = Time.time + flickerSpeed;
 
-            // Rastgele bir parlaklik sec
             float intensity = Random.Range(minIntensity, maxIntensity);
-
-            // Rengi parlaklik degeriyle carp (HDR etkisi)
             Color finalColor = Color.yellow * intensity;
 
-            // URP Lit Shader icindeki emisyon kanalina rengi gonder
-            _material.SetColor("_EmissionColor", finalColor);
+            _material.SetColor(EmissionColor, finalColor);
         }
     }
 }
