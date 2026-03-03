@@ -1,35 +1,38 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class HolyWheatCollectible : MonoBehaviour, ICollectible
 {
     [SerializeField] private WheatDesignSO _wheatDesignSO;
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private PlayerStateUI _playerStateUI;
+    private BoosterManager _boosterManager;
 
-
-    private RectTransform _playerBoosterTransform;
-    private Image _playerboosterImage;
-    
-    private void Awake()
+    public void Initialize(PlayerController controller, PlayerStateUI ui)
     {
-        _playerBoosterTransform = _playerStateUI.GetBoosterJumpTransform;
-        _playerboosterImage = _playerBoosterTransform.GetComponent<Image>();
+        _playerController = controller;
+        _playerStateUI = ui;
+        _boosterManager = FindObjectOfType<BoosterManager>();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player")) Collect();
     }
 
     public void Collect()
     {
         _playerController.SetJumpForce(_wheatDesignSO.IncreaseDecreaseMultiplier, _wheatDesignSO.ResetBoostDuration);
         
-        _playerStateUI.PlayBoosterUIAnimations(_playerBoosterTransform, _playerboosterImage,
-        _playerStateUI.GetHolyBoosterWheatImage, _wheatDesignSO.ActiveWheatSprite,
-        _wheatDesignSO.PassiveWheatSprite, _wheatDesignSO.ActiveWheatSprite,
-        _wheatDesignSO.PassiveWheatSprite, _wheatDesignSO.ResetBoostDuration);
-        
+        // Yeni basit UI tetikleyici
+        if (_playerStateUI != null)
+        {
+            _playerStateUI.ActivateBoosterUI("Jump", _wheatDesignSO.ResetBoostDuration);
+        }
+
         CameraShake.Instance.ShakeCamera(1f, 1f);
         AudioManager.Instance.Play(SoundType.PickupGoodSound);
-        
-        Destroy(gameObject);
 
+        if (_boosterManager != null) _boosterManager.OnBoosterCollected(gameObject);
+        Destroy(gameObject);
     }
 }
