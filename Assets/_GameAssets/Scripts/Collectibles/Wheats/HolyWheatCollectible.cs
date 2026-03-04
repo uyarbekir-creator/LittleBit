@@ -11,7 +11,7 @@ public class HolyWheatCollectible : MonoBehaviour, ICollectible
     {
         _playerController = controller;
         _playerStateUI = ui;
-        _boosterManager = FindObjectOfType<BoosterManager>();
+        _boosterManager = Object.FindAnyObjectByType<BoosterManager>();
     }
 
     private void OnTriggerEnter(Collider other)

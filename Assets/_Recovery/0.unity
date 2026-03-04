@@ -755,10 +755,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed32e8b1fdcecb408dfdf91d911b198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  _catController: {fileID: 0}
   _eggCounterUI: {fileID: 1514007283}
   _winLoseUI: {fileID: 652221451}
+  _playerHealthUI: {fileID: 0}
   _maxEggcount: 5
   _delay: 0
+  _gameSceneMusic: {fileID: 0}
 --- !u!1001 &196464168
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1373,8 +1376,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _orientationTransform: {fileID: 1017554597}
-  _movementkey: 101
   _movementSpeed: 40
+  _minMovementSpeed: 15
   _jumpkey: 32
   _jumpForce: 8
   _jumpcooldown: 0.66
@@ -1385,8 +1388,8 @@ MonoBehaviour:
   _slidekey: 113
   _slidemultiplier: 1.1
   _slideDrag: 2.2
-  _slidecooldown: 0
-  _canSlide: 0
+  _maxSlideStamina: 5
+  _staminaRegenMultiplier: 1.5
   _playerHeight: 1
   _groundLayer:
     serializedVersion: 2
@@ -6956,6 +6959,10 @@ MonoBehaviour:
   _soundButton: {fileID: 746912619}
   _resumeButton: {fileID: 1498720730}
   _mainMenuButton: {fileID: 720713550}
+  _musicActiveSprite: {fileID: 0}
+  _musicPassiveSprite: {fileID: 0}
+  _soundActiveSprite: {fileID: 0}
+  _soundPassiveSprite: {fileID: 0}
   _animationDuration: 0.3
 --- !u!1 &926624065
 GameObject:
@@ -12988,16 +12995,20 @@ MonoBehaviour:
   _playerController: {fileID: 288046300}
   _playerWalkingTransform: {fileID: 500137053}
   _playerSlidingTransform: {fileID: 557982345}
-  _boosterSpeedTransform: {fileID: 1032316421}
-  _boosterJumpTransform: {fileID: 425552330}
-  _boosterSlowTransform: {fileID: 582449084}
-  _goldboosterWheatImage: {fileID: 605312916}
-  _holyboosterWheatImage: {fileID: 1412930241}
-  _rottenboosterWheatImage: {fileID: 1979253179}
+  _playableDirector: {fileID: 0}
+  _speedIcon: {fileID: 0}
+  _jumpIcon: {fileID: 0}
+  _slowIcon: {fileID: 0}
+  _staminaProgressBar: {fileID: 0}
   _playerWalkingActiveSprite: {fileID: 21300000, guid: 63da247c002233a40b6ddb98eb9ccfc9, type: 3}
   _playerWalkingPassiveSprite: {fileID: 21300000, guid: 3dd674e6fd7c4b947ba844cefbe74a59, type: 3}
   _playerSlidingActiveSprite: {fileID: 21300000, guid: 0917b2a570f442240b4dad708ea03a8c, type: 3}
   _playerSlidingPassiveSprite: {fileID: 21300000, guid: d940b4f7ef5fecb41b88ec34b426e6e1, type: 3}
+  _activeColor: {r: 4, g: 4, b: 4, a: 1}
+  _passiveColor: {r: 1, g: 1, b: 1, a: 0.3}
+  _passiveScale: 1.5
+  _activeScale: 3
+  _scaleDuration: 0.25
   _moveDuration: 0.5
   _moveEase: 27
 --- !u!1 &1765879701

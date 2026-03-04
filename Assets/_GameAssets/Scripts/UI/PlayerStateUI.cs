@@ -27,13 +27,18 @@ public class PlayerStateUI : MonoBehaviour
     [SerializeField] private Sprite _playerSlidingActiveSprite;
     [SerializeField] private Sprite _playerSlidingPassiveSprite;
 
-    [Header("Booster Settings")]
-    [SerializeField] private Color _activeColor = Color.white;
-    [SerializeField] private Color _passiveColor = new Color(1, 1, 1, 0.3f);
-    [SerializeField] private float _scaleAmount = 1.3f;
-    [SerializeField] private float _scaleDuration = 0.2f;
+    [Header("Booster Visual Settings")]
+    [Tooltip("HDR Parlama için Intensity'yi yüksek tutun")]
+    [ColorUsage(true, true)] 
+    [SerializeField] private Color _activeColor = new Color(4f, 4f, 4f, 1f); 
+    [SerializeField] private Color _passiveColor = new Color(1f, 1f, 1f, 0.3f);
+    
+    [Space]
+    [SerializeField] private float _passiveScale = 1.5f; // Pasif durumdaki sabit büyüklük
+    [SerializeField] private float _activeScale = 3.0f;  // Aktif durumdaki devasa büyüklük
+    [SerializeField] private float _scaleDuration = 0.25f;
 
-    [Header("Movement Settings")]
+    [Header("Movement Settings (Walk/Slide Icons)")]
     [SerializeField] private float _moveDuration = 0.5f;
     [SerializeField] private Ease _moveEase = Ease.OutBack;
 
@@ -42,13 +47,14 @@ public class PlayerStateUI : MonoBehaviour
 
     private void Awake()
     {
+        // Image bileşenlerini al
         if (_playerWalkingTransform != null) _playerWalkingImage = _playerWalkingTransform.GetComponent<Image>();
         if (_playerSlidingTransform != null) _playerSlidingImage = _playerSlidingTransform.GetComponent<Image>();
         
-        // Başlangıçta ikonları sönük yap
-        ResetBoosterUI(_speedIcon);
-        ResetBoosterUI(_jumpIcon);
-        ResetBoosterUI(_slowIcon);
+        // Başlangıçta ikonları pasif (1.5x) durumuna getir
+        ResetToPassiveState(_speedIcon);
+        ResetToPassiveState(_jumpIcon);
+        ResetToPassiveState(_slowIcon);
     }
 
     private void Start()
@@ -57,18 +63,26 @@ public class PlayerStateUI : MonoBehaviour
         if (_playerController != null) _playerController.OnPlayerStateChanged += PlayerController_OnPlayerStateChanged;
     }
 
-    private void Update() => UpdateStaminaUI();
+    private void Update()
+    {
+        UpdateStaminaUI();
+    }
 
     private void UpdateStaminaUI()
     {
         if (_staminaProgressBar != null && _playerController != null)
+        {
             _staminaProgressBar.SetProgress(_playerController.GetStaminaNormalized());
+        }
     }
 
     // --- BOOSTER UI MANTIĞI ---
 
     public void ActivateBoosterUI(string type, float duration)
     {
+        // Animasyonların çakışmaması için diğer rutinleri durdur
+        StopAllCoroutines(); 
+
         switch (type)
         {
             case "Speed": StartCoroutine(BoosterRoutine(_speedIcon, duration)); break;
@@ -81,29 +95,38 @@ public class PlayerStateUI : MonoBehaviour
     {
         if (icon == null) yield break;
 
-        // Aktif Et: Rengi parlat ve büyüt
+        // Önceki Tween'leri temizle
         icon.DOKill();
-        icon.color = _activeColor;
-        icon.transform.DOScale(_scaleAmount, _scaleDuration).SetEase(Ease.OutBack);
+        icon.transform.DOKill();
 
+        // AKTİF ET: Rengi parlat ve 3 katına çıkar (Booster süresince böyle kalacak)
+        icon.color = _activeColor;
+        icon.transform.DOScale(_activeScale, _scaleDuration).SetEase(Ease.OutBack);
+
+        // Booster süresi kadar bekle
         yield return new WaitForSeconds(duration);
 
-        // Pasif Et: Sönükleştir ve boyutu sıfırla
-        ResetBoosterUI(icon);
+        // PASİF ET: Eski pasif boyutuna (1.5x) ve rengine dön
+        ResetToPassiveState(icon);
     }
 
-    private void ResetBoosterUI(Image icon)
+    private void ResetToPassiveState(Image icon)
     {
         if (icon == null) return;
         icon.DOKill();
+        icon.transform.DOKill();
+        
         icon.color = _passiveColor;
-        icon.transform.DOScale(1f, _scaleDuration).SetEase(Ease.InBack);
+        // DOTween ile yumuşak geçiş yaparak 1.5x boyutuna döner
+        icon.transform.DOScale(_passiveScale, _scaleDuration).SetEase(Ease.InBack);
     }
 
-    // --- STATE UI MANTIĞI ---
+    // --- STATE UI MANTIĞI (Walk/Slide İkon Kaydırma) ---
 
-    private void OnTimelineFinished(PlayableDirector director) => 
+    private void OnTimelineFinished(PlayableDirector director)
+    {
         SetStateUserInterfaces(_playerWalkingActiveSprite, _playerSlidingPassiveSprite, _playerWalkingTransform, _playerSlidingTransform);
+    }
 
     private void PlayerController_OnPlayerStateChanged(PlayerState playerState)
     {
@@ -123,12 +146,15 @@ public class PlayerStateUI : MonoBehaviour
     private void SetStateUserInterfaces(Sprite walkingSprite, Sprite slidingSprite, RectTransform active, RectTransform passive)
     {
         if (_playerWalkingImage == null || _playerSlidingImage == null) return;
+        
         _playerWalkingImage.sprite = walkingSprite;
         _playerSlidingImage.sprite = slidingSprite;
 
-        active.DOKill(); passive.DOKill();
-        active.DOAnchorPosX(-25f, _moveDuration).SetEase(_moveEase);
-        passive.DOAnchorPosX(-90f, _moveDuration).SetEase(_moveEase);
+        active.DOKill(); 
+        passive.DOKill();
+
+        active.DOAnchorPosX(-25f, _moveDuration).SetEase(_moveEase).SetLink(active.gameObject);
+        passive.DOAnchorPosX(-90f, _moveDuration).SetEase(_moveEase).SetLink(passive.gameObject);
     }
 
     private void OnDestroy()

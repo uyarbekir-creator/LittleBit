@@ -1,9 +1,9 @@
 using UnityEngine;
+using System.Collections;
 using System;
 
 public class PlayerController : MonoBehaviour
 {
-    // ... Mevcut event ve değişkenlerin (Değişiklik yok) ...
     public event Action OnPlayerJumped;
     public event Action<PlayerState> OnPlayerStateChanged;
 
@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement Settings")]
     [SerializeField] private float _movementSpeed;
+    [SerializeField] private float _minMovementSpeed = 15f; // Karakterin titrememesi için alt sınır
 
     [Header("Jump Settings")]
     [SerializeField] private KeyCode _jumpkey;
@@ -168,24 +169,14 @@ public class PlayerController : MonoBehaviour
         _playerRigidbody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
     }
 
-    private void ResetJumping()
-    {
-        _canJump = true;
-    }
+    private void ResetJumping() => _canJump = true;
 
     private void SetInputs()
     {
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKey(_slidekey) && _currentSlideStamina > 0 && IsGrounded())
-        {
-            _isSliding = true;
-        }
-        else
-        {
-            _isSliding = false;
-        }
+        _isSliding = Input.GetKey(_slidekey) && _currentSlideStamina > 0 && IsGrounded();
 
         if (Input.GetKey(_jumpkey) && _canJump && IsGrounded())
         {
@@ -218,26 +209,17 @@ public class PlayerController : MonoBehaviour
             _stateController.ChangeState(newState);
             OnPlayerStateChanged?.Invoke(newState);
 
-            // --- MUZIK TUNE AYARI ---
-            // Sliding basladiginda muzigi hizlandiriyoruz, bitince normale donduruyoruz
             if (BackgroundMusic.Instance != null)
             {
                 if (newState == PlayerState.Slide || newState == PlayerState.SlideIdle)
-                {
-                    BackgroundMusic.Instance.SetPitch(1.25f, 0.4f); // %25 hizlanma
-                }
+                    BackgroundMusic.Instance.SetPitch(1.25f, 0.4f);
                 else if (currentState == PlayerState.Slide || currentState == PlayerState.SlideIdle)
-                {
-                    BackgroundMusic.Instance.SetPitch(1.0f, 0.6f); // Normale donus
-                }
+                    BackgroundMusic.Instance.SetPitch(1.0f, 0.6f);
             }
         }
     }
 
-    public float GetStaminaNormalized()
-    {
-        return _currentSlideStamina / _maxSlideStamina;
-    }
+    public float GetStaminaNormalized() => _currentSlideStamina / _maxSlideStamina;
 
     #region Helper Functions
 
@@ -247,53 +229,20 @@ public class PlayerController : MonoBehaviour
         return Physics.CheckSphere(spherePosition, 0.2f, _groundLayer, QueryTriggerInteraction.Collide);
     }
 
-    private Vector3 GetMovementDirection()
-    {
-        return _movementdirection.normalized;
-    }
+    private Vector3 GetMovementDirection() => _movementdirection.normalized;
 
-    private bool IsSliding()
-    {
-        return _isSliding;
-    }
-
-    public void SetMovementSpeed(float speed, float duration)
-    {
-        _movementSpeed += speed;
-        Invoke(nameof(ResetMovementSpeed), duration);
-    }
-
-    private void ResetMovementSpeed()
-    {
-        _movementSpeed = _startingMovementSpeed;
-    }
-
-    public void SetJumpForce(float force, float duration)
-    {
-        _jumpForce += force;
-        Invoke(nameof(ResetJumpForce), duration);
-    }
-
-    private void ResetJumpForce()
-    {
-        _jumpForce = _startingJumpForce;
-    }
-
-    public Rigidbody GetPlayerRigidbody()
-    {
-        return _playerRigidbody;
-    }
+    private bool IsSliding() => _isSliding;
 
     public bool CanCatChase()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit,
           _playerHeight * 0.5f + 0.2f, _groundLayer))
         {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer(Consts.Layers.FLOOR_LAYER))
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Floor"))
             {
                 return true;
             }
-            else if (hit.collider.gameObject.layer == LayerMask.NameToLayer(Consts.Layers.GROUND_LAYER))
+            else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
                 return false;
             }
@@ -301,20 +250,51 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
+    // --- BOOSTER MANTIĞI ---
+
+    public void SetMovementSpeed(float speedAmount, float duration)
+    {
+        StartCoroutine(MovementSpeedRoutine(speedAmount, duration));
+    }
+
+    private IEnumerator MovementSpeedRoutine(float speedAmount, float duration)
+    {
+        _movementSpeed += speedAmount; // -25'i ekler
+
+        // Hızın 0 veya altına düşüp karakterin titremesini engellemek için alt sınır kontrolü
+        if (_movementSpeed < _minMovementSpeed)
+        {
+            _movementSpeed = _minMovementSpeed;
+        }
+
+        yield return new WaitForSeconds(duration);
+
+        // Hızı en güvenli şekilde başlangıç hızına geri döndürür
+        _movementSpeed = _startingMovementSpeed;
+    }
+
+    public void SetJumpForce(float forceAmount, float duration)
+    {
+        StartCoroutine(JumpForceRoutine(forceAmount, duration));
+    }
+
+    private IEnumerator JumpForceRoutine(float forceAmount, float duration)
+    {
+        _jumpForce += forceAmount;
+        yield return new WaitForSeconds(duration);
+        _jumpForce = _startingJumpForce; // Zıplama kuvvetini de başlangıç değerine döndürür
+    }
+
+    public Rigidbody GetPlayerRigidbody() => _playerRigidbody;
+
     private void OnTriggerEnter(Collider other)
     {
-        if (((1 << other.gameObject.layer) & _groundLayer) != 0)
-        {
-            _isInWater = true;
-        }
+        if (((1 << other.gameObject.layer) & _groundLayer) != 0) _isInWater = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (((1 << other.gameObject.layer) & _groundLayer) != 0)
-        {
-            _isInWater = false;
-        }
+        if (((1 << other.gameObject.layer) & _groundLayer) != 0) _isInWater = false;
     }
 
     #endregion
