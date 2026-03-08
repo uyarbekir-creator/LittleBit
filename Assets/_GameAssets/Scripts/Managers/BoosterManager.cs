@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.AI; // NavMesh kontrolü için bu kütüphaneyi ekledik
 
 public class BoosterManager : MonoBehaviour
 {
@@ -67,20 +68,30 @@ public class BoosterManager : MonoBehaviour
         int attempts = 0;
         bool found = false;
 
-        while (!found && attempts < 30)
+        // Deneme sayısını 50 yapıyoruz ki NavMesh üzerinde yer bulma şansı artsın
+        while (!found && attempts < 50)
         {
             attempts++;
             float rx = Random.Range(spawnAreaCenter.x - spawnAreaSize.x / 2f, spawnAreaCenter.x + spawnAreaSize.x / 2f);
             float rz = Random.Range(spawnAreaCenter.z - spawnAreaSize.z / 2f, spawnAreaCenter.z + spawnAreaSize.z / 2f);
-            randomPos = new Vector3(rx, fixedSpawnY, rz);
+            
+            Vector3 candidatePos = new Vector3(rx, fixedSpawnY, rz);
+            NavMeshHit hit;
 
-            found = true;
-            foreach (var obj in _activeObjects)
+            // NavMesh.SamplePosition: Seçilen nokta duvar içindeyse en yakın boş alana (1.0f mesafe içinde) çeker
+            if (NavMesh.SamplePosition(candidatePos, out hit, 1.0f, NavMesh.AllAreas))
             {
-                if (obj != null && Vector3.Distance(randomPos, obj.transform.position) < minDistanceBetweenBoosters)
+                randomPos = hit.position;
+                randomPos.y = fixedSpawnY; // Yüksekliği senin orijinal ayarına sabitliyoruz
+
+                found = true;
+                foreach (var obj in _activeObjects)
                 {
-                    found = false;
-                    break;
+                    if (obj != null && Vector3.Distance(randomPos, obj.transform.position) < minDistanceBetweenBoosters)
+                    {
+                        found = false;
+                        break;
+                    }
                 }
             }
         }
@@ -113,6 +124,7 @@ public class BoosterManager : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        // Gizmos rengini hafif şeffaf yaparak alanı daha iyi görmeni sağlar
         Gizmos.color = new Color(1, 0, 0, 0.3f);
         Gizmos.DrawCube(spawnAreaCenter, spawnAreaSize);
     }
