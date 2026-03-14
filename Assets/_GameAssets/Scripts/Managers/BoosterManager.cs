@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.AI; // NavMesh kontrolü için bu kütüphaneyi ekledik
+using UnityEngine.AI; // NavMesh kontrolü için eklendi
 
 public class BoosterManager : MonoBehaviour
 {
@@ -43,8 +43,6 @@ public class BoosterManager : MonoBehaviour
             Vector3 pos = GetValidRandomPosition();
             GameObject newEgg = Instantiate(eggPrefab, pos, Quaternion.identity);
             _activeObjects.Add(newEgg);
-            
-            // Eğer yumurtaların da tag'i varsa buraya ekleyebilirsin
             newEgg.tag = "Egg"; 
         }
     }
@@ -68,8 +66,7 @@ public class BoosterManager : MonoBehaviour
         int attempts = 0;
         bool found = false;
 
-        // Deneme sayısını 50 yapıyoruz ki NavMesh üzerinde yer bulma şansı artsın
-        while (!found && attempts < 50)
+        while (!found && attempts < 100)
         {
             attempts++;
             float rx = Random.Range(spawnAreaCenter.x - spawnAreaSize.x / 2f, spawnAreaCenter.x + spawnAreaSize.x / 2f);
@@ -78,11 +75,11 @@ public class BoosterManager : MonoBehaviour
             Vector3 candidatePos = new Vector3(rx, fixedSpawnY, rz);
             NavMeshHit hit;
 
-            // NavMesh.SamplePosition: Seçilen nokta duvar içindeyse en yakın boş alana (1.0f mesafe içinde) çeker
-            if (NavMesh.SamplePosition(candidatePos, out hit, 1.0f, NavMesh.AllAreas))
+            // NavMesh kontrolü: 3 birimlik yarıçapta en yakın yürünebilir alanı bulur
+            if (NavMesh.SamplePosition(candidatePos, out hit, 3.0f, NavMesh.AllAreas))
             {
                 randomPos = hit.position;
-                randomPos.y = fixedSpawnY; // Yüksekliği senin orijinal ayarına sabitliyoruz
+                randomPos.y = fixedSpawnY;
 
                 found = true;
                 foreach (var obj in _activeObjects)
@@ -95,18 +92,16 @@ public class BoosterManager : MonoBehaviour
                 }
             }
         }
-        return randomPos;
+        return found ? randomPos : spawnAreaCenter;
     }
 
     public void OnBoosterCollected(GameObject collectedObj)
     {
-        // Listeden temizle
         if (_activeObjects.Contains(collectedObj))
         {
             _activeObjects.Remove(collectedObj);
         }
 
-        // Sadece Booster ise yenisini çıkar (Yumurta ise sessizce yok olsun, senin sayaç devralır)
         bool isBooster = collectedObj.GetComponent<ICollectible>() != null && !collectedObj.CompareTag("Egg");
         
         if (isBooster)
@@ -124,7 +119,6 @@ public class BoosterManager : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        // Gizmos rengini hafif şeffaf yaparak alanı daha iyi görmeni sağlar
         Gizmos.color = new Color(1, 0, 0, 0.3f);
         Gizmos.DrawCube(spawnAreaCenter, spawnAreaSize);
     }
